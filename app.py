@@ -8,7 +8,7 @@ import requests
 
 st.set_page_config(page_title="Rozpoznawanie Zwierząt", layout="centered")
 
-st.title("🐾 Rozpoznawanie Zwierząt")
+st.title("Rozpoznawanie Zwierząt")
 st.write("Prześlij zdjęcie zwierzęcia, a nasz model rozpozna jego gatunek.")
 
 @st.cache_resource
@@ -51,4 +51,4 @@ if uploaded_file:
             _, predicted_idx = outputs.max(1)
             predicted_label = imagenet_labels[predicted_idx.item()]
 
-        st.success(f"📢 Rozpoznano: **{predicted_label.capitalize()}**")
+        st.success(f"Rozpoznano: **{predicted_label.capitalize()}**")
