@@ -7,7 +7,8 @@ if (-Not (Get-Command python -ErrorAction SilentlyContinue)) {
 # Instalacja zależności
 Write-Host "Instalowanie zależności..." -ForegroundColor Yellow
 pip install streamlit pillow
+pip install -r requirements.txt
 
 # Uruchomienie aplikacji
 Write-Host "Uruchamianie aplikacji Streamlit..." -ForegroundColor Green
-streamlit run app.py
+python -m streamlit run app.py
