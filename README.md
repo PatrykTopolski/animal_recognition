@@ -27,3 +27,14 @@ Jeśli wymagane pakiety nie są zainstalowane, uruchom poniższe polecenie, któ
 Jeżeli wymagane pakiety istnieją aplikacje uruchamia się komentą:
 
  - streamlit run app.py
+
+
+### Budowanie obrazu
+```bash
+docker build -t animal_recognition .
+```
+
+### Uruchamianie Obrazu
+```bash
+docker run -p 8501:8501 animal_recognition
+```
