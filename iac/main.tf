@@ -17,10 +17,6 @@ resource "random_id" "rand" {
   byte_length = 4
 }
 
-variable "region" {
-  default = "West Europe"
-}
-
 resource "azurerm_resource_group" "rg" {
   name     = "rg-github-iac"
   location = var.region
