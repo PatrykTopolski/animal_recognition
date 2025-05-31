@@ -34,11 +34,10 @@ resource "azurerm_service_plan" "asp" {
   name                = "github-iac-asp"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
-  sku {
-    tier = "Basic"
-    size = "B1"
-  }
+  os_type             = "Linux"
+  sku_name            = "B1"
 }
+
 
 resource "azurerm_app_service" "app" {
   name                = "github-iac-webapp"
