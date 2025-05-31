@@ -28,17 +28,17 @@ jobs:
         run: az account show
 
       - name: Terraform Init
-        working-directory: .
+        working-directory: ./iac
         run: terraform init
 
       - name: Terraform Validate
-        working-directory: .
+        working-directory: ./iac
         run: terraform validate
 
       - name: Terraform Plan
-        working-directory: .
+        working-directory: ./iac
         run: terraform plan
 
       - name: Terraform Apply
-        working-directory: .
+        working-directory: ./iac
         run: terraform apply -auto-approve
