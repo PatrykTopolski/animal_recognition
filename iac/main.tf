@@ -1,23 +1,42 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 3.0"
+    }
+  }
+
+  required_version = ">= 1.0.0"
+}
+
 provider "azurerm" {
   features {}
 }
 
+resource "random_id" "rand" {
+  byte_length = 4
+}
+
+variable "region" {
+  default = "West Europe"
+}
+
 resource "azurerm_resource_group" "rg" {
   name     = "rg-github-iac"
-  location = "West Europe"
+  location = var.region
 }
 
 resource "azurerm_storage_account" "storage" {
   name                     = "iacstorage${random_id.rand.hex}"
   resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
+  location                 = var.region
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
 
-resource "azurerm_app_service_plan" "asp" {
+resource "azurerm_service_plan" "asp" {
   name                = "github-iac-asp"
-  location            = azurerm_resource_group.rg.location
+  location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
   sku {
     tier = "Basic"
@@ -27,7 +46,7 @@ resource "azurerm_app_service_plan" "asp" {
 
 resource "azurerm_app_service" "app" {
   name                = "github-iac-webapp"
-  location            = azurerm_resource_group.rg.location
+  location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.asp.id
+  app_service_plan_id = azurerm_service_plan.asp.id
 }
