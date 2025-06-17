@@ -1,52 +1,42 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.0"
-    }
-  }
-
-  required_version = ">= 1.0.0"
-}
-
 provider "azurerm" {
   features {}
-
-  subscription_id = var.subscription_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
 }
 
-resource "random_id" "rand" {
-  byte_length = 4
-}
+variable "docker_username" {}
+variable "docker_password" {}
 
 data "azurerm_resource_group" "rg" {
   name = "rg-github-iac"
 }
 
-
-resource "azurerm_storage_account" "storage" {
-  name                     = "iacstorage${random_id.rand.hex}"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = var.region
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-resource "azurerm_service_plan" "asp" {
+data "azurerm_app_service_plan" "asp" {
   name                = "github-iac-asp"
-  location            = var.region
-  resource_group_name = azurerm_resource_group.rg.name
-  os_type             = "Linux"
-  sku_name            = "B1"
+  resource_group_name = data.azurerm_resource_group.rg.name
 }
 
-
-resource "azurerm_app_service" "app" {
+resource "azurerm_linux_web_app" "app" {
   name                = "github-iac-webapp"
-  location            = var.region
-  resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_service_plan.asp.id
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  service_plan_id     = data.azurerm_app_service_plan.asp.id
+
+  site_config {
+    application_stack {
+      docker_image     = "githubiacregistry.azurecr.io/myapp"
+      docker_image_tag = "latest"
+    }
+
+    always_on = true
+  }
+
+  app_settings = {
+    WEBSITES_PORT                    = "8080"
+    DOCKER_REGISTRY_SERVER_URL      = "https://githubiacregistry.azurecr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME = var.docker_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = var.docker_password
+  }
+}
+
+output "app_url" {
+  value = azurerm_linux_web_app.app.default_hostname
 }
