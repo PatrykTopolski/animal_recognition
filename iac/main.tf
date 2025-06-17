@@ -23,7 +23,6 @@ resource "azurerm_linux_web_app" "app" {
   site_config {
     application_stack {
       docker_image_name   = "githubiacregistry.azurecr.io/myapp"
-      docker_image_tag    = "latest"
     }
 
     always_on = true
