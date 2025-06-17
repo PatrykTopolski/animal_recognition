@@ -21,13 +21,8 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = data.azurerm_service_plan.asp.id
 
   site_config {
-    application_stack {
-      docker {
-        image_name   = "githubiacregistry.azurecr.io/myapp:latest"
-        registry_url = "https://githubiacregistry.azurecr.io"
-      }
-    }
-    always_on = true
+    always_on             = true
+    linux_fx_version      = "DOCKER|githubiacregistry.azurecr.io/myapp:latest"
   }
 
   app_settings = {
