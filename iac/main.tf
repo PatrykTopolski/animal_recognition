@@ -22,10 +22,10 @@ resource "random_id" "rand" {
   byte_length = 4
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "rg-github-iac"
-  location = var.region
+data "azurerm_resource_group" "rg" {
+  name = "rg-github-iac"
 }
+
 
 resource "azurerm_storage_account" "storage" {
   name                     = "iacstorage${random_id.rand.hex}"
