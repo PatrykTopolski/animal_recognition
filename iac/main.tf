@@ -22,11 +22,11 @@ resource "azurerm_linux_web_app" "app" {
 
   site_config {
     application_stack {
-      docker_image_name   = "githubiacregistry.azurecr.io/myapp"
-      docker_image_tag    = "latest"
-      docker_registry_url = "https://githubiacregistry.azurecr.io"
+      docker {
+        image_name   = "githubiacregistry.azurecr.io/myapp:latest"
+        registry_url = "https://githubiacregistry.azurecr.io"
+      }
     }
-
     always_on = true
   }
 
