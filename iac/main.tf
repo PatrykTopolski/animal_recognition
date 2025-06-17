@@ -20,13 +20,17 @@ resource "azurerm_linux_web_app" "app" {
   resource_group_name = data.azurerm_resource_group.rg.name
   service_plan_id     = data.azurerm_service_plan.asp.id
 
-  site_config {
-    application_stack {
-      docker_image_name   = "githubiacregistry.azurecr.io/myapp"
-    }
-
-    always_on = true
+  container_settings {
+    image_name     = "githubiacregistry.azurecr.io/myapp:latest"
+    registry_server_url      = "https://githubiacregistry.azurecr.io"
+    registry_username        = var.docker_username
+    registry_password        = var.docker_password
   }
+
+  app_settings = {
+    WEBSITES_PORT = "8080"
+  }
+}
 
   app_settings = {
     WEBSITES_PORT                    = "8080"
