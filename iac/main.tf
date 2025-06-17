@@ -21,8 +21,12 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = data.azurerm_service_plan.asp.id
 
   site_config {
-    always_on             = true
-    linux_fx_version      = "DOCKER|githubiacregistry.azurecr.io/myapp:latest"
+    application_stack {
+      docker_image_name   = "githubiacregistry.azurecr.io/myapp"
+      docker_image_tag    = "latest"
+    }
+
+    always_on = true
   }
 
   app_settings = {
