@@ -48,12 +48,15 @@ resource "azurerm_linux_web_app" "app" {
     WEBSITES_CONTAINER_START_TIME_LIMIT = "1800"
     WEBSITES_CONTAINER_IMAGE             = "githubiacregistry.azurecr.io/myapp:latest"
   }
+
+
 }
 
 resource "azurerm_role_assignment" "acr_pull" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_linux_web_app.app.identity[0].principal_id
+  depends_on = [azurerm_linux_web_app.app]
 }
 
 
