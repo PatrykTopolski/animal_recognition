@@ -9,8 +9,13 @@ terraform {
   required_version = ">= 1.5.0"
 }
 
+variable "subscription_id" {
+  type = string
+}
+
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
 }
 
 data "azurerm_resource_group" "rg" {
