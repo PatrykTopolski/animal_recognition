@@ -24,3 +24,8 @@ variable "tenant_id" {
   description = "Azure tenant ID"
   type        = string
 }
+
+variable "azure_storage_connection_string" {
+  type = string
+  description = "Connection string do Azure Storage"
+}
