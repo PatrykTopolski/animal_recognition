@@ -43,6 +43,11 @@ jobs:
         working-directory: ./iac
         run: cat .terraform.lock.hcl
 
+      - name: Terraform import existing Linux Web App
+        run: |
+          terraform init
+          terraform import azurerm_linux_web_app.app /subscriptions/TWOJE_SUBSCRIPTION_ID/resourceGroups/rg-github-iac/providers/Microsoft.Web/sites/github-iac-webapp || echo "Import failed or already imported"
+
       - name: Terraform Validate
         working-directory: ./iac
         run: terraform validate
