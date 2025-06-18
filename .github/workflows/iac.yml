@@ -48,6 +48,10 @@ jobs:
         run: |
           terraform import azurerm_linux_web_app.app /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-github-iac/providers/Microsoft.Web/sites/github-iac-webapp || echo "Import failed or already imported"
 
+      - name: Terraform Import azurerm_role_assignment.acr_pull
+        run: |
+          terraform import azurerm_role_assignment.acr_pull /subscriptions/9081ca88-4f7a-4c2f-a060-17e32c90dacd/resourceGroups/rg-github-iac/providers/Microsoft.ContainerRegistry/registries/githubiacregistry/providers/Microsoft.Authorization/roleAssignments/d143ab5c-3fd4-a3ff-f1a5-176a6dc42717
+
       - name: Terraform Validate
         working-directory: ./iac
         run: terraform validate
