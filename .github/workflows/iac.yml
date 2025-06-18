@@ -39,6 +39,10 @@ jobs:
         working-directory: ./iac
         run: terraform init -upgrade
 
+      - name: Show Terraform provider lock file
+        working-directory: ./iac
+        run: cat .terraform.lock.hcl
+
       - name: Terraform Validate
         working-directory: ./iac
         run: terraform validate

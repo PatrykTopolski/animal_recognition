@@ -33,19 +33,20 @@ resource "azurerm_linux_web_app" "app" {
 
   site_config {
     always_on = true
-  }
 
-  container_settings {
-    image_name          = "githubiacregistry.azurecr.io/myapp:latest"
-    registry_server_url = "https://githubiacregistry.azurecr.io"
-    registry_username   = var.docker_username
-    registry_password   = var.docker_password
+    container_settings {
+      image_name          = "githubiacregistry.azurecr.io/myapp:latest"
+      registry_server_url = "https://githubiacregistry.azurecr.io"
+      registry_username   = var.docker_username
+      registry_password   = var.docker_password
+    }
   }
 
   app_settings = {
     WEBSITES_PORT = "8080"
   }
 }
+
 
 output "app_url" {
   value = azurerm_linux_web_app.app.default_hostname
