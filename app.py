@@ -6,8 +6,8 @@ import requests
 import streamlit as st
 import torch
 import torchvision.transforms as transforms
-from PIL import Image
 from azure.storage.blob import BlobServiceClient
+from PIL import Image
 from torchvision import models
 
 st.set_page_config(page_title="Rozpoznawanie Zwierząt", layout="centered")
@@ -71,24 +71,38 @@ if uploaded_file:
         connection_string = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
 
         if connection_string is None:
-            st.error("Nie znaleziono zmiennej środowiskowej AZURE_STORAGE_CONNECTION_STRING")
+            st.error(
+                "Nie znaleziono zmiennej środowiskowej AZURE_STORAGE_CONNECTION_STRING"
+            )
         else:
             try:
                 # Inicjalizacja klienta Azure Blob
-                blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-                container_client = blob_service_client.get_container_client("predictions")
+                blob_service_client = BlobServiceClient.from_connection_string(
+                    connection_string
+                )
+                container_client = blob_service_client.get_container_client(
+                    "predictions"
+                )
 
                 # input.png
                 image_bytes = uploaded_file.read()
-                container_client.upload_blob(f"{storage_path_prefix}input.png", image_bytes, overwrite=True)
+                container_client.upload_blob(
+                    f"{storage_path_prefix}input.png", image_bytes, overwrite=True
+                )
 
                 # input.txt
-                input_info = (f"Uploaded file name: {uploaded_file.name}\nModel input tensor shape:"
-                              f" {input_tensor.shape}\n")
-                container_client.upload_blob(f"{storage_path_prefix}input.txt", input_info, overwrite=True)
+                input_info = (
+                    f"Uploaded file name: {uploaded_file.name}\nModel input tensor shape:"
+                    f" {input_tensor.shape}\n"
+                )
+                container_client.upload_blob(
+                    f"{storage_path_prefix}input.txt", input_info, overwrite=True
+                )
 
                 # output.txt
-                container_client.upload_blob(f"{storage_path_prefix}output.txt", predicted_label, overwrite=True)
+                container_client.upload_blob(
+                    f"{storage_path_prefix}output.txt", predicted_label, overwrite=True
+                )
 
                 st.write(f"Dane zapisane w Azure Blob Storage: `{storage_path_prefix}`")
 
