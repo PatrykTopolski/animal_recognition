@@ -13,8 +13,6 @@ from torchvision import models
 st.set_page_config(page_title="Rozpoznawanie Zwierząt", layout="centered")
 
 port = os.environ.get("PORT", "8080")
-st.write(f"App runs on port: {port}")
-
 
 st.title("Rozpoznawanie Zwierząt")
 st.write("Prześlij zdjęcie zwierzęcia, a nasz model rozpozna jego gatunek.")
