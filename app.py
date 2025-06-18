@@ -10,10 +10,11 @@ from azure.storage.blob import BlobServiceClient
 from PIL import Image
 from torchvision import models
 
+st.set_page_config(page_title="Rozpoznawanie Zwierząt", layout="centered")
+
 port = os.environ.get("PORT", "8080")
 st.write(f"App runs on port: {port}")
 
-st.set_page_config(page_title="Rozpoznawanie Zwierząt", layout="centered")
 
 st.title("Rozpoznawanie Zwierząt")
 st.write("Prześlij zdjęcie zwierzęcia, a nasz model rozpozna jego gatunek.")
