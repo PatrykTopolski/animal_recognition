@@ -5,6 +5,8 @@ terraform {
       version = ">= 3.81.0"
     }
   }
+
+  required_version = ">= 1.5.0"
 }
 
 provider "azurerm" {
@@ -30,22 +32,20 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = data.azurerm_service_plan.asp.id
 
   site_config {
-    application_stack {
-      docker_image     = "githubiacregistry.azurecr.io/myapp"
-      docker_image_tag = "latest"
-    }
-
     always_on = true
+
+    container_settings {
+      image_name          = "githubiacregistry.azurecr.io/myapp:latest"
+      registry_server_url = "https://githubiacregistry.azurecr.io"
+      registry_username   = var.docker_username
+      registry_password   = var.docker_password
+    }
   }
 
   app_settings = {
-    WEBSITES_PORT                    = "8080"
-    DOCKER_REGISTRY_SERVER_URL      = "https://githubiacregistry.azurecr.io"
-    DOCKER_REGISTRY_SERVER_USERNAME = var.docker_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = var.docker_password
+    WEBSITES_PORT = "8080"
   }
 }
-
 
 output "app_url" {
   value = azurerm_linux_web_app.app.default_hostname
