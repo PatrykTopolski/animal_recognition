@@ -37,3 +37,5 @@ urllib3==2.2.1
 torch
 torchvision
 setuptools
+azure-storage-blob
+
