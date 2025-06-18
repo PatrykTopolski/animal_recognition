@@ -37,7 +37,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./iac
-        run: terraform init
+        run: terraform init -upgrade
 
       - name: Terraform Validate
         working-directory: ./iac
