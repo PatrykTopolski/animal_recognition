@@ -38,4 +38,3 @@ torch
 torchvision
 setuptools
 azure-storage-blob
-
