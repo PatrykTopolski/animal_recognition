@@ -1,13 +1,14 @@
+import datetime
 import json
+import os
+
 import requests
 import streamlit as st
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
-from torchvision import models
-import os
-import datetime
 from azure.storage.blob import BlobServiceClient
+from torchvision import models
 
 st.set_page_config(page_title="Rozpoznawanie Zwierząt", layout="centered")
 
@@ -82,7 +83,8 @@ if uploaded_file:
                 container_client.upload_blob(f"{storage_path_prefix}input.png", image_bytes, overwrite=True)
 
                 # input.txt
-                input_info = f"Uploaded file name: {uploaded_file.name}\nModel input tensor shape: {input_tensor.shape}\n"
+                input_info = (f"Uploaded file name: {uploaded_file.name}\nModel input tensor shape:"
+                              f" {input_tensor.shape}\n")
                 container_client.upload_blob(f"{storage_path_prefix}input.txt", input_info, overwrite=True)
 
                 # output.txt
