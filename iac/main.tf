@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.33.0"
+      version = ">= 3.81.0"
     }
   }
 }
@@ -30,8 +30,12 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = data.azurerm_service_plan.asp.id
 
   site_config {
-    linux_fx_version = "DOCKER|githubiacregistry.azurecr.io/myapp:latest"
-    always_on        = true
+    application_stack {
+      docker_image     = "githubiacregistry.azurecr.io/myapp"
+      docker_image_tag = "latest"
+    }
+
+    always_on = true
   }
 
   app_settings = {
@@ -41,6 +45,7 @@ resource "azurerm_linux_web_app" "app" {
     DOCKER_REGISTRY_SERVER_PASSWORD = var.docker_password
   }
 }
+
 
 output "app_url" {
   value = azurerm_linux_web_app.app.default_hostname
