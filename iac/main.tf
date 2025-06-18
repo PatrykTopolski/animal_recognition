@@ -35,17 +35,17 @@ resource "azurerm_linux_web_app" "app" {
     always_on = true
   }
 
-  container_settings {
-    image_name          = "githubiacregistry.azurecr.io/myapp:latest"
-    registry_server_url = "https://githubiacregistry.azurecr.io"
-    registry_username   = var.docker_username
-    registry_password   = var.docker_password
-  }
-
   app_settings = {
-    WEBSITES_PORT = "8080"
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
+    WEBSITES_PORT                       = "8080"
+    DOCKER_REGISTRY_SERVER_URL          = "https://githubiacregistry.azurecr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME     = var.docker_username
+    DOCKER_REGISTRY_SERVER_PASSWORD     = var.docker_password
+    WEBSITES_CONTAINER_START_TIME_LIMIT = "1800"
+    WEBSITES_CONTAINER_IMAGE             = "githubiacregistry.azurecr.io/myapp:latest"
   }
 }
+
 
 output "app_url" {
   value = azurerm_linux_web_app.app.default_hostname
